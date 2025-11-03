@@ -103,6 +103,72 @@
         .bg-dots .moving { width: 12px; height: 12px; }
       }
     </style>
+
+<!-- Copy these styles into the <head> (you can put into css/style.css instead) -->
+<style>
+  /* Keep navbar above hero */
+  .site-navbar { position: relative; z-index: 50; }
+
+  /* hero layout & layers */
+  #hero.site-blocks-cover { position: relative; overflow: hidden; min-height: 60vh; }
+  .bg-layer {
+    position: absolute;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: opacity 0.9s ease;
+    z-index: 0;
+    opacity: 0;
+    will-change: opacity, transform;
+    transform: translateZ(0);
+  }
+  .bg-layer.visible { opacity: 1; }
+
+  /* keep content above layers */
+  #hero > .container, #hero .overlay-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* dots */
+  .bg-dots {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 18px;
+    display: flex;
+    gap: 12px;
+    z-index: 3;
+    align-items: center;
+    pointer-events: none; /* change if you want clickable dots */
+    height: 20px;
+  }
+  .bg-dots .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transition: background 0.25s, transform 0.25s;
+  }
+  .bg-dots .dot.active { background: rgba(255,255,255,0.95); transform: scale(1.2); }
+  .bg-dots .moving {
+    position: absolute;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    top: 50%; transform: translate(-50%,-50%);
+    transition: left 0.9s cubic-bezier(.2,.8,.2,1);
+    z-index: 1;
+    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+
+  @media (max-width:576px) {
+    .bg-dots { gap:8px; bottom:12px; }
+    .bg-dots .dot{ width:8px;height:8px; }
+    .bg-dots .moving{ width:12px;height:12px; }
+  }
+</style>
+
+
   </head>
 
   <body>
@@ -110,7 +176,7 @@
 
     <!-- (navigation omitted for brevity) -->
 
-    <div id="hero" class="site-blocks-cover overlay" data-aos="fade">
+    <!--div id="hero" class="site-blocks-cover overlay" data-aos="fade">
       <div class="container overlay-content">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
@@ -118,7 +184,31 @@
             <h4 class="mb-4">Welcome! I am a PhD candidate at Georgia Institute of Technology. I am interested in computational astrophysics, accretion around massive black holes and Type Ia Supernova[...]</h4>
           </div>
         </div>
+      </div-->
+      <!-- Replace your existing #hero block with this exact block (paste over the existing hero section) -->
+<div id="hero" class="site-blocks-cover overlay" data-aos="fade">
+  <!-- background layers (two layers to cross-fade reliably) -->
+  <div class="bg-layer layer-a" aria-hidden="true"></div>
+  <div class="bg-layer layer-b" aria-hidden="true"></div>
+
+  <div class="container overlay-content">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
+        <h1 class="mb-4">Vishal Tiwari</h1>
+        <h4 class="mb-4">
+          Welcome! I am a PhD candidate at Georgia Institute of Technology. I am interested in computational astrophysics, accretion around massive black holes and Type Ia Supernova[...]
+        </h4>
       </div>
+    </div>
+  </div>
+
+    <!-- Dots indicator -->
+  <div class="bg-dots" id="bgDots">
+    <div class="moving" id="bgMovingDot" aria-hidden="true"></div>
+    <!-- static dots will be inserted by JS -->
+  </div>
+</div>
+
 
       <!-- Dots indicator (will be populated by JS based on number of images) -->
       <div class="bg-dots" id="bgDots">
@@ -274,6 +364,122 @@
     });
   })();
   </script>
+  <!-- Copy this script just before the closing </body> (or into js/main.js) -->
+<script>
+(function(){
+  // EDIT THIS: list the images you want to rotate (relative to the site root or absolute URLs)
+  var images = [
+    'images/website_wallpaper2.png',
+    'images/website_wallpaper3.png',
+    'images/website_wallpaper4.png'
+  ];
+
+  // How long each image stays visible (ms)
+  var intervalMs = 3500;
+  // Must match CSS transition for .bg-layer (900ms above)
+  var transitionMs = 900;
+
+  var hero = document.getElementById('hero');
+  if (!hero || !images || images.length === 0) return;
+
+  var layerA = hero.querySelector('.layer-a');
+  var layerB = hero.querySelector('.layer-b');
+  var dotsContainer = document.getElementById('bgDots');
+  var movingDot = document.getElementById('bgMovingDot');
+
+  if (!layerA || !layerB || !dotsContainer || !movingDot) return;
+
+  // Preload images
+  images.forEach(function(src){ var i = new Image(); i.src = src; });
+
+  // Create static dots
+  var dots = [];
+  images.forEach(function(_, idx){
+    var d = document.createElement('div');
+    d.className = 'dot';
+    // If you want clickable dots, uncomment the next two lines:
+    // d.style.pointerEvents = 'auto';
+    // d.addEventListener('click', function(){ goToIndex(idx); });
+    dotsContainer.appendChild(d);
+    dots.push(d);
+  });
+
+  // Position the moving dot centered on the target static dot
+  function positionMovingDotOn(index) {
+    var target = dots[index];
+    if (!target) return;
+    var contRect = dotsContainer.getBoundingClientRect();
+    var tRect = target.getBoundingClientRect();
+    var left = (tRect.left + tRect.width/2) - contRect.left;
+    movingDot.style.left = left + 'px';
+    dots.forEach(function(el, i){ el.classList.toggle('active', i === index); });
+  }
+
+  // initial setup
+  var current = 0;
+  var visibleLayer = layerA;
+  var hiddenLayer = layerB;
+
+  visibleLayer.style.backgroundImage = "url('" + images[current] + "')";
+  visibleLayer.classList.add('visible');
+
+  var nextIndex = (current + 1) % images.length;
+  hiddenLayer.style.backgroundImage = "url('" + images[nextIndex] + "')";
+  hiddenLayer.classList.remove('visible');
+
+  // small timeout so DOM layout is done before positioning moving dot
+  setTimeout(function(){ positionMovingDotOn(0); }, 60);
+
+  // slideshow loop
+  var intervalId = setInterval(advance, intervalMs);
+
+  function advance(){
+    var incoming = (current + 1) % images.length;
+    // ensure hidden has the incoming image
+    hiddenLayer.style.backgroundImage = "url('" + images[incoming] + "')";
+    // cross-fade: show hidden, hide visible
+    hiddenLayer.classList.add('visible');
+    visibleLayer.classList.remove('visible');
+    // move dot
+    positionMovingDotOn(incoming);
+
+    // after transition ends, swap references and prepare next
+    setTimeout(function(){
+      var tmp = visibleLayer; visibleLayer = hiddenLayer; hiddenLayer = tmp;
+      current = incoming;
+      var upcoming = (current + 1) % images.length;
+      hiddenLayer.style.backgroundImage = "url('" + images[upcoming] + "')";
+      hiddenLayer.classList.remove('visible');
+    }, transitionMs + 25);
+  }
+
+  // optional: navigate to specific index (used when you enable clickable dots)
+  function goToIndex(i){
+    if (i === current) return;
+    clearInterval(intervalId);
+    hiddenLayer.style.backgroundImage = "url('" + images[i] + "')";
+    hiddenLayer.classList.add('visible');
+    visibleLayer.classList.remove('visible');
+    positionMovingDotOn(i);
+    setTimeout(function(){
+      var tmp = visibleLayer; visibleLayer = hiddenLayer; hiddenLayer = tmp;
+      current = i;
+      var upcoming = (current + 1) % images.length;
+      hiddenLayer.style.backgroundImage = "url('" + images[upcoming] + "')";
+      hiddenLayer.classList.remove('visible');
+      intervalId = setInterval(advance, intervalMs);
+    }, transitionMs + 25);
+  }
+
+  // keep moving dot aligned on resize
+  var rt;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ positionMovingDotOn(current); }, 120);
+  });
+
+})();
+</script>
 
   <script src="js/main.js"></script>
   </body>
