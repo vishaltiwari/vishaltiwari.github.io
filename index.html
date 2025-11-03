@@ -79,7 +79,7 @@
       <div class="site-mobile-menu-body"></div>
     </div> <!-- .site-mobile-menu -->
     
-    <div class="site-blocks-cover overlay" style="background-image: url('images/website_wallpaper2.png'); top: 0; left: 0;" data-aos="fade">
+    <!--div class="site-blocks-cover overlay" style="background-image: url('images/website_wallpaper2.png'); top: 0; left: 0;" data-aos="fade">
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
@@ -88,7 +88,17 @@
           </div>
         </div>
       </div>
+    </div-->
+    <div id="background-carousel" class="owl-carousel owl-theme">
+
+      <div class="item" style="background-image: url('images/website_wallpaper2.png');"></div>
+
+      <div class="item" style="background-image: url('images/4D_GIS.png');"></div>
+
+      <div class="item" style="background-image: url('images/home_back.png');"></div>
+
     </div>
+    <div class="site-wrap">
 
     <!--div class="site-section">
       <div class="container">
@@ -468,6 +478,20 @@
   <script src="js/circleaudioplayer.js"></script>
 
   <script src="js/main.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('#background-carousel').owlCarousel({
+        items: 1,           // Show one slide at a time
+        loop: true,           // Loop infinitely
+        autoplay: true,       // Start playing automatically
+        autoplayTimeout: 5000,  // 5 seconds per slide
+        autoplayHoverPause: false,
+        animateOut: 'fadeOut', // Nice fade effect
+        nav: false,         // Hide navigation arrows
+        dots: false          // Hide navigation dots
+      });
+    });
+  </script>
     
   </body>
 </html>
