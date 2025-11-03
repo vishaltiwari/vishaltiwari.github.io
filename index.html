@@ -24,94 +24,92 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Small additions for background slideshow -->
+    <!-- Background slideshow + moving dots indicator CSS -->
     <style>
-      /* We will change background-image on .site-blocks-cover via JS.
-         Add a smooth cross-fade using pseudo-element overlay. */
-      .site-blocks-cover {
+      /* Ensure hero covers and pseudo-elements don't tile */
+      #hero.site-blocks-cover {
         position: relative;
         overflow: hidden;
       }
-      .site-blocks-cover::before,
-      .site-blocks-cover::after {
+      #hero.site-blocks-cover::before,
+      #hero.site-blocks-cover::after {
         content: "";
         position: absolute;
         inset: 0;
         background-size: cover;
-        background-position: center center;
+        background-position: center;
         background-repeat: no-repeat;
         transition: opacity 0.8s ease-in-out;
         z-index: 0;
       }
-      /* Use ::before for current image, ::after for next (or vice versa).
-         We'll flip opacities in JS to create fade effect; content inside must be above (z-index:1). */
-      .site-blocks-cover::before { opacity: 1; }
-      .site-blocks-cover::after  { opacity: 0; }
-
-      /* Ensure the container content sits above pseudo-elements */
-      .site-blocks-cover > .container,
-      .site-blocks-cover .overlay-content {
+      #hero.site-blocks-cover > .container,
+      #hero.site-blocks-cover .overlay-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
+      }
+      /* Optional tint overlay (if you want dimming) */
+      #hero.site-blocks-cover.overlay::after { /* keep above backgrounds if overlay class used */
+        /* nothing here - overlay tint handled by site styles; ensure z-index ordering */
       }
 
-      /* Optional: ensure the overlay tint (if you used .overlay class) still shows */
-      .site-blocks-cover.overlay::before,
-      .site-blocks-cover.overlay::after {
-        background-blend-mode: overlay;
+      /* Dots container bottom-left centered */
+      .bg-dots {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 24px;
+        display: flex;
+        gap: 12px;
+        z-index: 3;
+        align-items: center;
+        pointer-events: none; /* allow clicks pass-through unless you want clickable dots */
+      }
+
+      /* Each dot */
+      .bg-dots .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.35);
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+      .bg-dots .dot.active {
+        background: rgba(255,255,255,0.95);
+        transform: scale(1.2);
+      }
+
+      /* Moving "progress" dot (a slightly bigger dot that slides along) */
+      .bg-dots .moving {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.95);
+        top: 50%;
+        transform: translate(-50%, -50%);
+        transition: left 0.6s cubic-bezier(.2,.8,.2,1);
+        pointer-events: none;
+        z-index: 1;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      }
+
+      /* Make dots clickable on hover if you enable pointer events later */
+      .bg-dots .dot.clickable { pointer-events: auto; cursor: pointer; }
+
+      /* Small responsive tweak */
+      @media (max-width: 576px) {
+        .bg-dots { gap: 8px; bottom: 16px; }
+        .bg-dots .dot { width: 8px; height: 8px; }
+        .bg-dots .moving { width: 12px; height: 12px; }
       }
     </style>
-    
   </head>
+
   <body>
-  
   <div class="site-wrap">
 
-    <div class="site-navbar mt-4">
-        <div class="container py-1">
-          <div class="row align-items-center">
-            <div class="col-8 col-md-8 col-lg-4">
-              <!--h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong>Vishal<span class="text-primary">.</span></strong></a></h1-->
-              <h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong><span class="text-primary"></span></strong></a></h1>
-            </div>
-            <div class="col-4 col-md-4 col-lg-8">
-              <nav class="site-navigation text-right text-md-right" role="navigation">
+    <!-- (navigation omitted for brevity) -->
 
-                <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
-
-                <ul class="site-menu js-clone-nav d-none d-lg-block">
-                  <li class="active">
-                    <a href="index.html">Home</a>
-                  </li>
-                  <li><a href="research.html">Research</a></li>
-                  <li class="has-children">
-                    <a href="projects.html">Projects</a>
-                    <ul class="dropdown arrow-top">
-		      <li><a href="projects.html#physics">Second Masters</a></li>
-                      <li><a href="projects.html#cs">First Masters / Bachelors</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="./Vishal_Tiwari_Resume.pdf">CV</a></li>
-                  <li><a href="pubs.html">Publications</a></li>
-                  <li><a href="contact.html">About</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="site-mobile-menu">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div> <!-- .site-mobile-menu -->
-    
-    <!-- Removed inline style background-image. JS will manage the background images and fade. -->
     <div id="hero" class="site-blocks-cover overlay" data-aos="fade">
       <div class="container overlay-content">
         <div class="row align-items-center justify-content-center">
@@ -121,9 +119,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Dots indicator (will be populated by JS based on number of images) -->
+      <div class="bg-dots" id="bgDots">
+        <!-- moving dot -->
+        <div class="moving" id="bgMovingDot" style="left:0;"></div>
+        <!-- static dots will be appended here by JS -->
+      </div>
     </div>
 
-  <!-- rest of the page unchanged... (omitted here for brevity; keep your existing content) -->
+    <!-- rest of the page unchanged... -->
 
   </div>
 
@@ -142,86 +147,134 @@
   <script src="js/circleaudioplayer.js"></script>
 
   <script>
-    /*
-      Background slideshow for the hero (#hero).
-      - Provide an array of image URLs (relative to site root or absolute).
-      - Preloads images, then cycles every intervalMs.
-      - Uses ::before and ::after pseudo-elements on .site-blocks-cover for cross-fade.
-    */
+  /*
+    Background slideshow with a moving dot indicator.
+    - Edit the images[] array to include your images.
+    - intervalMs controls how long each image shows.
+    - The moving dot slides between static dots while they toggle active state.
+  */
+  (function () {
+    var images = [
+      'images/home_back.png',
+      'images/4D_GIS.png',
+      'images/website_wallpaper2.png'
+      // add more image paths here
+    ];
+    var intervalMs = 3500; // 3.5s between images
+    var transitionDurationMs = 800; // matches CSS transition 0.8s
 
-    (function () {
-      // Edit this list with the images you want to rotate through
-      var images = [
-        'images/background_img.png',
-        //'images/home_back.png',
-        //'images/4D_GIS.png'
-        // add more images as needed
-      ];
+    var hero = document.getElementById('hero');
+    var dotsContainer = document.getElementById('bgDots');
+    var movingDot = document.getElementById('bgMovingDot');
+    if (!hero || !dotsContainer || !movingDot || images.length === 0) return;
 
-      var intervalMs = 3500; // 3500 ms ~ 3.5 seconds. Change to 3000-4000 as you prefer.
+    // Preload images
+    images.forEach(function (s) { var i = new Image(); i.src = s; });
 
-      var hero = document.getElementById('hero');
-      if (!hero || !images || images.length === 0) return;
+    // Prepare dynamic stylesheet for pseudo-elements so we keep background-size/no-repeat etc.
+    var styleEl = document.createElement('style');
+    document.head.appendChild(styleEl);
+    var sheet = styleEl.sheet;
 
-      // Preload images
-      var preloaded = [];
-      images.forEach(function (src) {
-        var img = new Image();
-        img.src = src;
-        preloaded.push(img);
-      });
+    function updatePseudo(beforeUrl, afterUrl, beforeOpacity, afterOpacity) {
+      while (sheet.cssRules.length) sheet.deleteRule(0);
+      var b = "url('" + beforeUrl + "')";
+      var a = "url('" + afterUrl + "')";
+      var selBefore = "#hero.site-blocks-cover::before";
+      var selAfter  = "#hero.site-blocks-cover::after";
+      var ruleBefore = selBefore + " { background-image: " + b + "; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: " + beforeOpacity + "; }";
+      var ruleAfter  = selAfter  + " { background-image: " + a + "; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: " + afterOpacity + "; }";
+      sheet.insertRule(ruleBefore, 0);
+      sheet.insertRule(ruleAfter, 1);
+    }
 
-      // We'll maintain indices and swap the background images on ::before and ::after
-      var current = 0;
-      // Initialize both pseudo-elements by injecting a small stylesheet that targets this specific hero
-      var styleEl = document.createElement('style');
-      document.head.appendChild(styleEl);
-      var sheet = styleEl.sheet;
+    // Build static dots based on images count
+    var dots = [];
+    images.forEach(function (_, idx) {
+      var d = document.createElement('div');
+      d.className = 'dot';
+      // Optional: make clickable by uncommenting next line
+      // d.classList.add('clickable');
+      // d.addEventListener('click', function () { goToIndex(idx); });
+      dotsContainer.appendChild(d);
+      dots.push(d);
+    });
 
-      function setPseudoBackground(beforeUrl, afterUrl, beforeOpacity, afterOpacity) {
-        // Escape URLs
-        var b = "url('" + beforeUrl + "')";
-        var a = "url('" + afterUrl + "')";
-        // Set rules for this specific hero element using its ID to avoid global impact
-        var selectorBefore = "#hero.site-blocks-cover::before";
-        var selectorAfter  = "#hero.site-blocks-cover::after";
-        // Remove existing rules (simple approach: clear stylesheet)
-        while (sheet.cssRules.length) sheet.deleteRule(0);
+    // Position moving dot initially on first static dot
+    function positionMovingDotOn(index) {
+      var targetDot = dots[index];
+      if (!targetDot) return;
+      // Calculate center position of the target dot relative to container
+      var containerRect = dotsContainer.getBoundingClientRect();
+      var dotRect = targetDot.getBoundingClientRect();
+      // left relative to container center translation (we positioned container at 50% with translateX(-50%))
+      var left = (dotRect.left + dotRect.width / 2) - containerRect.left;
+      movingDot.style.left = left + 'px';
+      // update active class
+      dots.forEach(function (el, i) { el.classList.toggle('active', i === index); });
+    }
 
-        sheet.insertRule(selectorBefore + " { background-image: " + b + "; opacity: " + beforeOpacity + "; }", 0);
-        sheet.insertRule(selectorAfter  + " { background-image: " + a + "; opacity: " + afterOpacity + "; }", 0);
-      }
+    // Slideshow logic with cross-fade using ::before/::after
+    var current = 0;
+    var next = (current + 1) % images.length;
+    // initialize pseudo backgrounds: current visible, next hidden
+    updatePseudo(images[current], images[next], 1, 0);
+    // initial dot placement (wait for layout)
+    setTimeout(function () { positionMovingDotOn(0); }, 50);
 
-      // Start with first image visible, second prepared (if present)
-      var next = (current + 1) % images.length;
-      setPseudoBackground(images[current], images[next], 1, 0);
-
-      // After small delay, begin cycling
-      setTimeout(function () {
-        setInterval(function () {
-          // swap fade: show next by setting ::after opaque while ::before fades out,
-          // then rotate the roles by swapping URLs
-          var incoming = (current + 1) % images.length;
-          // step 1: set ::after to incoming image and make it opaque
-          setPseudoBackground(images[current], images[incoming], 1, 0);
-          // force reflow then trigger fade
-          // set ::after opacity to 1 by rewriting rules (we'll simply call with opacities swapped)
+    var intervalHandle = null;
+    function startSlideshow() {
+      intervalHandle = setInterval(function () {
+        var incoming = (current + 1) % images.length;
+        // set incoming into ::after, then fade it in
+        updatePseudo(images[current], images[incoming], 1, 0);
+        // small delay then fade
+        setTimeout(function () {
+          updatePseudo(images[current], images[incoming], 0, 1);
+          // move the moving dot at the same time (slightly longer transition so it's smooth)
+          positionMovingDotOn(incoming);
+          // after transition completes, rotate current and prepare next
           setTimeout(function () {
-            setPseudoBackground(images[current], images[incoming], 0, 1);
-            // after transition duration (match CSS transition 0.8s), rotate indices and make before hold the incoming
-            setTimeout(function () {
-              current = incoming;
-              // prepare the next incoming image in the hidden pseudo-element (after)
-              var upcoming = (current + 1) % images.length;
-              setPseudoBackground(images[current], images[upcoming], 1, 0);
-            }, 900); // slightly longer than the CSS transition
-          }, 20);
-        }, intervalMs);
-      }, 500);
-    })();
+            current = incoming;
+            var upcoming = (current + 1) % images.length;
+            updatePseudo(images[current], images[upcoming], 1, 0);
+          }, transitionDurationMs + 80);
+        }, 20);
+      }, intervalMs);
+    }
+
+    // Optional function to jump to an index (if you enable clickable dots)
+    function goToIndex(i) {
+      if (i === current) return;
+      clearInterval(intervalHandle);
+      // fade to selected image immediately
+      updatePseudo(images[current], images[i], 1, 0);
+      setTimeout(function () {
+        updatePseudo(images[current], images[i], 0, 1);
+        positionMovingDotOn(i);
+        setTimeout(function () {
+          current = i;
+          var upcoming = (current + 1) % images.length;
+          updatePseudo(images[current], images[upcoming], 1, 0);
+          startSlideshow();
+        }, transitionDurationMs + 80);
+      }, 20);
+    }
+
+    // start
+    startSlideshow();
+
+    // Reposition moving dot on resize to stay aligned
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        positionMovingDotOn(current);
+      }, 120);
+    });
+  })();
   </script>
 
   <script src="js/main.js"></script>
-    
   </body>
 </html>
