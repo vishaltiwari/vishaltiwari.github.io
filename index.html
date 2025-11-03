@@ -23,202 +23,433 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- Background slideshow + moving dots indicator CSS -->
-    <style>
-      /* Ensure hero covers and pseudo-elements don't tile */
-      #hero.site-blocks-cover {
-        position: relative;
-        overflow: hidden;
-      }
-      #hero.site-blocks-cover::before,
-      #hero.site-blocks-cover::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        transition: opacity 0.8s ease-in-out;
-        z-index: 0;
-      }
-      #hero.site-blocks-cover > .container,
-      #hero.site-blocks-cover .overlay-content {
-        position: relative;
-        z-index: 2;
-      }
-      /* Optional tint overlay (if you want dimming) */
-      #hero.site-blocks-cover.overlay::after { /* keep above backgrounds if overlay class used */
-        /* nothing here - overlay tint handled by site styles; ensure z-index ordering */
-      }
-
-      /* Dots container bottom-left centered */
-      .bg-dots {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 24px;
-        display: flex;
-        gap: 12px;
-        z-index: 3;
-        align-items: center;
-        pointer-events: none; /* allow clicks pass-through unless you want clickable dots */
-      }
-
-      /* Each dot */
-      .bg-dots .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.35);
-        transition: background 0.3s ease, transform 0.3s ease;
-      }
-      .bg-dots .dot.active {
-        background: rgba(255,255,255,0.95);
-        transform: scale(1.2);
-      }
-
-      /* Moving "progress" dot (a slightly bigger dot that slides along) */
-      .bg-dots .moving {
-        position: absolute;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.95);
-        top: 50%;
-        transform: translate(-50%, -50%);
-        transition: left 0.6s cubic-bezier(.2,.8,.2,1);
-        pointer-events: none;
-        z-index: 1;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-      }
-
-      /* Make dots clickable on hover if you enable pointer events later */
-      .bg-dots .dot.clickable { pointer-events: auto; cursor: pointer; }
-
-      /* Small responsive tweak */
-      @media (max-width: 576px) {
-        .bg-dots { gap: 8px; bottom: 16px; }
-        .bg-dots .dot { width: 8px; height: 8px; }
-        .bg-dots .moving { width: 12px; height: 12px; }
-      }
-    </style>
-
-<!-- Copy these styles into the <head> (you can put into css/style.css instead) -->
-<style>
-  /* Keep navbar above hero */
-  .site-navbar { position: relative; z-index: 50; }
-
-  /* hero layout & layers */
-  #hero.site-blocks-cover { position: relative; overflow: hidden; min-height: 60vh; }
-  .bg-layer {
-    position: absolute;
-    inset: 0; /* top:0; right:0; bottom:0; left:0 */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    transition: opacity 0.9s ease;
-    z-index: 0;
-    opacity: 0;
-    will-change: opacity, transform;
-    transform: translateZ(0);
-  }
-  .bg-layer.visible { opacity: 1; }
-
-  /* keep content above layers */
-  #hero > .container, #hero .overlay-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* dots */
-  .bg-dots {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 18px;
-    display: flex;
-    gap: 12px;
-    z-index: 3;
-    align-items: center;
-    pointer-events: none; /* change if you want clickable dots */
-    height: 20px;
-  }
-  .bg-dots .dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255,255,255,0.35);
-    transition: background 0.25s, transform 0.25s;
-  }
-  .bg-dots .dot.active { background: rgba(255,255,255,0.95); transform: scale(1.2); }
-  .bg-dots .moving {
-    position: absolute;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: rgba(255,255,255,0.95);
-    top: 50%; transform: translate(-50%,-50%);
-    transition: left 0.9s cubic-bezier(.2,.8,.2,1);
-    z-index: 1;
-    pointer-events: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  }
-
-  @media (max-width:576px) {
-    .bg-dots { gap:8px; bottom:12px; }
-    .bg-dots .dot{ width:8px;height:8px; }
-    .bg-dots .moving{ width:12px;height:12px; }
-  }
-</style>
-
-
+    
   </head>
-
   <body>
+  
+    
+  
   <div class="site-wrap">
 
-    <!-- (navigation omitted for brevity) -->
+    <div class="site-navbar mt-4">
+        <div class="container py-1">
+          <div class="row align-items-center">
+            <div class="col-8 col-md-8 col-lg-4">
+              <!--h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong>Vishal<span class="text-primary">.</span></strong></a></h1-->
+              <h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0"><strong><span class="text-primary"></span></strong></a></h1>
+            </div>
+            <div class="col-4 col-md-4 col-lg-8">
+              <nav class="site-navigation text-right text-md-right" role="navigation">
 
-    <!--div id="hero" class="site-blocks-cover overlay" data-aos="fade">
-      <div class="container overlay-content">
+                <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+                <ul class="site-menu js-clone-nav d-none d-lg-block">
+                  <li class="active">
+                    <a href="index.html">Home</a>
+                  </li>
+                  <li><a href="research.html">Research</a></li>
+                  <li class="has-children">
+                    <a href="projects.html">Projects</a>
+                    <ul class="dropdown arrow-top">
+		      <li><a href="projects.html#physics">Second Masters</a></li>
+                      <li><a href="projects.html#cs">First Masters / Bachelors</a></li>
+                      <!--li><a href="projects.html#physics">Physics Projects</a></li>
+                      <li><a href="projects.html#cs">Computer Science Projects (old)</a></li-->
+                    </ul>
+                  </li>
+                  <li><a href="./Vishal_Tiwari_Resume.pdf">CV</a></li>
+                  <li><a href="pubs.html">Publications</a></li>
+                  <li><a href="contact.html">About</a></li>
+                </ul>
+              </nav>
+            </div>
+           
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+    
+    <div class="site-blocks-cover overlay" style="background-image: url('images/website_wallpaper2.png'); top: 0; left: 0;" data-aos="fade">
+      <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
             <h1 class="mb-4">Vishal Tiwari</h1>
-            <h4 class="mb-4">Welcome! I am a PhD candidate at Georgia Institute of Technology. I am interested in computational astrophysics, accretion around massive black holes and Type Ia Supernova[...]</h4>
+            <h4 class="mb-4">Welcome! I am a PhD candidate at Georgia Institute of Technology. I am interested in computational astrophysics, accretion around massive black holes and Type Ia Supernovae.</h4> 
           </div>
         </div>
-      </div-->
-      <!-- Replace your existing #hero block with this exact block (paste over the existing hero section) -->
-<div id="hero" class="site-blocks-cover overlay" data-aos="fade">
-  <!-- background layers (two layers to cross-fade reliably) -->
-  <div class="bg-layer layer-a" aria-hidden="true"></div>
-  <div class="bg-layer layer-b" aria-hidden="true"></div>
-
-  <div class="container overlay-content">
-    <div class="row align-items-center justify-content-center">
-      <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
-        <h1 class="mb-4">Vishal Tiwari</h1>
-        <h4 class="mb-4">
-          Welcome! I am a PhD candidate at Georgia Institute of Technology. I am interested in computational astrophysics, accretion around massive black holes and Type Ia Supernova[...]
-        </h4>
-      </div>
-    </div>
-  </div>
-
-    <!-- Dots indicator -->
-  <div class="bg-dots" id="bgDots">
-    <div class="moving" id="bgMovingDot" aria-hidden="true"></div>
-    <!-- static dots will be inserted by JS -->
-  </div>
-</div>
-
-
-      <!-- Dots indicator (will be populated by JS based on number of images) -->
-      <div class="bg-dots" id="bgDots">
-        <!-- moving dot -->
-        <div class="moving" id="bgMovingDot" style="left:0;"></div>
-        <!-- static dots will be appended here by JS -->
       </div>
     </div>
 
-    <!-- rest of the page unchanged... -->
+    <!--div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
+            <h2 class="mb-5">Projects</h2>
+            <p>Some of my projects</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+            <a href="#" class="unit-9">
+              <div class="image" style="background-image: url('images/img_1.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>This Is The Day</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+                <span>with Wendy Matos</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+            <a href="#" class="unit-9">
+              <div class="image" style="background-image: url('images/img_2.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>Electro Party</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+                <span>with Gaby Tenda</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+            <a href="#" class="unit-9">
+              <div class="image" style="background-image: url('images/img_3.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>Classic Hits</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+                <span>with James Tenda</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+            <a href="#" class="unit-9">
+              <div class="image" style="background-image: url('images/img_4.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>Classic Songs</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+                <span>with Troy Peters</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+
+      <div class="container">
+
+        <div class="row">
+          <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto" data-aos="fade-up">
+            <h2 class="mb-5">Featured Podcasts</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet, fugit nam obcaecati fuga itaque deserunt officia, error reiciendis ab quod?</p>
+          </div>
+        </div>
+        
+        <div class="site-block-retro d-block d-md-flex">
+
+          <a href="#" class="col1 unit-9 no-height" data-aos="fade-up" data-aos-delay="100">
+            <div class="image" style="background-image: url('images/img_2.jpg');"></div>
+            <div class="unit-9-content">
+              <h2>Classic Songs For Classic People</h2>
+              <span>Friday 1:00pm &mdash; 2:30pm</span>
+            </div>
+          </a>
+
+          <div class="col2 ml-auto">
+
+            <a href="#" class="col2-row1 unit-9 no-height" data-aos="fade-up" data-aos-delay="200">
+              <div class="image" style="background-image: url('images/img_3.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>Classic Songs For Classic People</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+              </div>
+            </a>
+
+            <a href="#" class="col2-row2 unit-9 no-height" data-aos="fade-up" data-aos-delay="300">
+              <div class="image" style="background-image: url('images/img_1.jpg');"></div>
+              <div class="unit-9-content">
+                <h2>Classic Songs For Classic People</h2>
+                <span>Friday 1:00pm &mdash; 2:30pm</span>
+              </div>
+            </a>
+
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+
+    
+    <div class="site-section bg-dark block-13">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
+            <h2 class="mb-5">Love By Our Listeners</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet, fugit nam obcaecati fuga itaque deserunt officia, error reiciendis ab quod?</p>
+          </div>
+        </div>
+        <div class="nonloop-block-13 owl-carousel">
+          
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_1.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Megan Smith</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_2.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Brooke Cagle</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_3.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Philip Martin</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_1.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Steven Ericson</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_2.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Nathan Dumlao</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="text-center p-3 p-md-5 bg-white">
+            <div class="mb-4">            
+              <img src="images/person_4.jpg" alt="Image" class="w-50 mx-auto img-fluid rounded-circle">
+            </div>
+            <div class="text-black">
+              <h3 class="font-weight-light h5">Brook Smith</h3>
+              <p class="font-italic">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, iusto. Aliquam illo, cum sed ea? Ducimus quos, ea?&rdquo;</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>  
+    
+
+    
+    <div class="site-section">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
+            <h2 class="mb-5">Our DJs</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet, fugit nam obcaecati fuga itaque deserunt officia, error reiciendis ab quod?</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_1.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Megan Smith</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_2.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Brooke Cagle</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_3.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Philip Martin</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_4.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Steven Ericson</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_5.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Nathan Dumlao</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-5">
+            <div class="team-member">
+
+              <img src="images/person_6.jpg" alt="Image" class="img-fluid">
+
+              <div class="text">
+
+                <h2 class="mb-2 font-weight-light h4">Brooke Cagle</h2>
+                <span class="d-block mb-2 text-white-opacity-05">Creative Director</span>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit ullam reprehenderit nemo.</p>
+                <p>
+                  <a href="#" class="text-white p-2"><span class="icon-facebook"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-twitter"></span></a>
+                  <a href="#" class="text-white p-2"><span class="icon-linkedin"></span></a>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-dark">
+      <div class="container">
+        <div class="row">
+          <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto" data-aos="fade-up">
+            <h2 class="mb-5">News &amp; Events</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet, fugit nam obcaecati fuga itaque deserunt officia, error reiciendis ab quod?</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+            <a href="single.html"><img src="images/img_4.jpg" alt="Image" class="img-fluid"></a>
+            <div class="p-4 bg-white">
+              <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
+              <h2 class="h5 text-black mb-3"><a href="single.html">This Is The Day, Party, Party!</a></h2>
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="200">
+            <a href="single.html"><img src="images/img_2.jpg" alt="Image" class="img-fluid"></a>
+            <div class="p-4 bg-white">
+              <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
+              <h2 class="h5 text-black mb-3"><a href="single.html">This Is The Day, Party, Party!</a></h2>
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="300">
+            <a href="single.html"><img src="images/img_3.jpg" alt="Image" class="img-fluid"></a>
+            <div class="p-4 bg-white">
+              <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
+              <h2 class="h5 text-black mb-3"><a href="single.html">This Is The Day, Party, Party!</a></h2>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-primary" data-aos="fade">
+      <div class="container">
+        <div class="row">
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-facebook text-white"></span></a>
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-twitter text-white"></span></a>
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-instagram text-white"></span></a>
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-linkedin text-white"></span></a>
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-pinterest text-white"></span></a>
+          <a href="#" class="col-2 text-center py-4 social-icon d-block"><span class="icon-youtube text-white"></span></a>
+        </div>
+      </div>
+    </div-->
 
   </div>
 
@@ -236,251 +467,7 @@
   <script src="js/aos.js"></script>
   <script src="js/circleaudioplayer.js"></script>
 
-  <script>
-  /*
-    Background slideshow with a moving dot indicator.
-    - Edit the images[] array to include your images.
-    - intervalMs controls how long each image shows.
-    - The moving dot slides between static dots while they toggle active state.
-  */
-  (function () {
-    var images = [
-      'images/home_back.png',
-      'images/4D_GIS.png',
-      'images/website_wallpaper2.png'
-      // add more image paths here
-    ];
-    var intervalMs = 3500; // 3.5s between images
-    var transitionDurationMs = 800; // matches CSS transition 0.8s
-
-    var hero = document.getElementById('hero');
-    var dotsContainer = document.getElementById('bgDots');
-    var movingDot = document.getElementById('bgMovingDot');
-    if (!hero || !dotsContainer || !movingDot || images.length === 0) return;
-
-    // Preload images
-    images.forEach(function (s) { var i = new Image(); i.src = s; });
-
-    // Prepare dynamic stylesheet for pseudo-elements so we keep background-size/no-repeat etc.
-    var styleEl = document.createElement('style');
-    document.head.appendChild(styleEl);
-    var sheet = styleEl.sheet;
-
-    function updatePseudo(beforeUrl, afterUrl, beforeOpacity, afterOpacity) {
-      while (sheet.cssRules.length) sheet.deleteRule(0);
-      var b = "url('" + beforeUrl + "')";
-      var a = "url('" + afterUrl + "')";
-      var selBefore = "#hero.site-blocks-cover::before";
-      var selAfter  = "#hero.site-blocks-cover::after";
-      var ruleBefore = selBefore + " { background-image: " + b + "; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: " + beforeOpacity + "; }";
-      var ruleAfter  = selAfter  + " { background-image: " + a + "; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: " + afterOpacity + "; }";
-      sheet.insertRule(ruleBefore, 0);
-      sheet.insertRule(ruleAfter, 1);
-    }
-
-    // Build static dots based on images count
-    var dots = [];
-    images.forEach(function (_, idx) {
-      var d = document.createElement('div');
-      d.className = 'dot';
-      // Optional: make clickable by uncommenting next line
-      // d.classList.add('clickable');
-      // d.addEventListener('click', function () { goToIndex(idx); });
-      dotsContainer.appendChild(d);
-      dots.push(d);
-    });
-
-    // Position moving dot initially on first static dot
-    function positionMovingDotOn(index) {
-      var targetDot = dots[index];
-      if (!targetDot) return;
-      // Calculate center position of the target dot relative to container
-      var containerRect = dotsContainer.getBoundingClientRect();
-      var dotRect = targetDot.getBoundingClientRect();
-      // left relative to container center translation (we positioned container at 50% with translateX(-50%))
-      var left = (dotRect.left + dotRect.width / 2) - containerRect.left;
-      movingDot.style.left = left + 'px';
-      // update active class
-      dots.forEach(function (el, i) { el.classList.toggle('active', i === index); });
-    }
-
-    // Slideshow logic with cross-fade using ::before/::after
-    var current = 0;
-    var next = (current + 1) % images.length;
-    // initialize pseudo backgrounds: current visible, next hidden
-    updatePseudo(images[current], images[next], 1, 0);
-    // initial dot placement (wait for layout)
-    setTimeout(function () { positionMovingDotOn(0); }, 50);
-
-    var intervalHandle = null;
-    function startSlideshow() {
-      intervalHandle = setInterval(function () {
-        var incoming = (current + 1) % images.length;
-        // set incoming into ::after, then fade it in
-        updatePseudo(images[current], images[incoming], 1, 0);
-        // small delay then fade
-        setTimeout(function () {
-          updatePseudo(images[current], images[incoming], 0, 1);
-          // move the moving dot at the same time (slightly longer transition so it's smooth)
-          positionMovingDotOn(incoming);
-          // after transition completes, rotate current and prepare next
-          setTimeout(function () {
-            current = incoming;
-            var upcoming = (current + 1) % images.length;
-            updatePseudo(images[current], images[upcoming], 1, 0);
-          }, transitionDurationMs + 80);
-        }, 20);
-      }, intervalMs);
-    }
-
-    // Optional function to jump to an index (if you enable clickable dots)
-    function goToIndex(i) {
-      if (i === current) return;
-      clearInterval(intervalHandle);
-      // fade to selected image immediately
-      updatePseudo(images[current], images[i], 1, 0);
-      setTimeout(function () {
-        updatePseudo(images[current], images[i], 0, 1);
-        positionMovingDotOn(i);
-        setTimeout(function () {
-          current = i;
-          var upcoming = (current + 1) % images.length;
-          updatePseudo(images[current], images[upcoming], 1, 0);
-          startSlideshow();
-        }, transitionDurationMs + 80);
-      }, 20);
-    }
-
-    // start
-    startSlideshow();
-
-    // Reposition moving dot on resize to stay aligned
-    var resizeTimer;
-    window.addEventListener('resize', function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () {
-        positionMovingDotOn(current);
-      }, 120);
-    });
-  })();
-  </script>
-  <!-- Copy this script just before the closing </body> (or into js/main.js) -->
-<script>
-(function(){
-  // EDIT THIS: list the images you want to rotate (relative to the site root or absolute URLs)
-  var images = [
-    'images/website_wallpaper2.png',
-    'images/website_wallpaper3.png',
-    'images/website_wallpaper4.png'
-  ];
-
-  // How long each image stays visible (ms)
-  var intervalMs = 3500;
-  // Must match CSS transition for .bg-layer (900ms above)
-  var transitionMs = 900;
-
-  var hero = document.getElementById('hero');
-  if (!hero || !images || images.length === 0) return;
-
-  var layerA = hero.querySelector('.layer-a');
-  var layerB = hero.querySelector('.layer-b');
-  var dotsContainer = document.getElementById('bgDots');
-  var movingDot = document.getElementById('bgMovingDot');
-
-  if (!layerA || !layerB || !dotsContainer || !movingDot) return;
-
-  // Preload images
-  images.forEach(function(src){ var i = new Image(); i.src = src; });
-
-  // Create static dots
-  var dots = [];
-  images.forEach(function(_, idx){
-    var d = document.createElement('div');
-    d.className = 'dot';
-    // If you want clickable dots, uncomment the next two lines:
-    // d.style.pointerEvents = 'auto';
-    // d.addEventListener('click', function(){ goToIndex(idx); });
-    dotsContainer.appendChild(d);
-    dots.push(d);
-  });
-
-  // Position the moving dot centered on the target static dot
-  function positionMovingDotOn(index) {
-    var target = dots[index];
-    if (!target) return;
-    var contRect = dotsContainer.getBoundingClientRect();
-    var tRect = target.getBoundingClientRect();
-    var left = (tRect.left + tRect.width/2) - contRect.left;
-    movingDot.style.left = left + 'px';
-    dots.forEach(function(el, i){ el.classList.toggle('active', i === index); });
-  }
-
-  // initial setup
-  var current = 0;
-  var visibleLayer = layerA;
-  var hiddenLayer = layerB;
-
-  visibleLayer.style.backgroundImage = "url('" + images[current] + "')";
-  visibleLayer.classList.add('visible');
-
-  var nextIndex = (current + 1) % images.length;
-  hiddenLayer.style.backgroundImage = "url('" + images[nextIndex] + "')";
-  hiddenLayer.classList.remove('visible');
-
-  // small timeout so DOM layout is done before positioning moving dot
-  setTimeout(function(){ positionMovingDotOn(0); }, 60);
-
-  // slideshow loop
-  var intervalId = setInterval(advance, intervalMs);
-
-  function advance(){
-    var incoming = (current + 1) % images.length;
-    // ensure hidden has the incoming image
-    hiddenLayer.style.backgroundImage = "url('" + images[incoming] + "')";
-    // cross-fade: show hidden, hide visible
-    hiddenLayer.classList.add('visible');
-    visibleLayer.classList.remove('visible');
-    // move dot
-    positionMovingDotOn(incoming);
-
-    // after transition ends, swap references and prepare next
-    setTimeout(function(){
-      var tmp = visibleLayer; visibleLayer = hiddenLayer; hiddenLayer = tmp;
-      current = incoming;
-      var upcoming = (current + 1) % images.length;
-      hiddenLayer.style.backgroundImage = "url('" + images[upcoming] + "')";
-      hiddenLayer.classList.remove('visible');
-    }, transitionMs + 25);
-  }
-
-  // optional: navigate to specific index (used when you enable clickable dots)
-  function goToIndex(i){
-    if (i === current) return;
-    clearInterval(intervalId);
-    hiddenLayer.style.backgroundImage = "url('" + images[i] + "')";
-    hiddenLayer.classList.add('visible');
-    visibleLayer.classList.remove('visible');
-    positionMovingDotOn(i);
-    setTimeout(function(){
-      var tmp = visibleLayer; visibleLayer = hiddenLayer; hiddenLayer = tmp;
-      current = i;
-      var upcoming = (current + 1) % images.length;
-      hiddenLayer.style.backgroundImage = "url('" + images[upcoming] + "')";
-      hiddenLayer.classList.remove('visible');
-      intervalId = setInterval(advance, intervalMs);
-    }, transitionMs + 25);
-  }
-
-  // keep moving dot aligned on resize
-  var rt;
-  window.addEventListener('resize', function(){
-    clearTimeout(rt);
-    rt = setTimeout(function(){ positionMovingDotOn(current); }, 120);
-  });
-
-})();
-</script>
-
   <script src="js/main.js"></script>
+    
   </body>
 </html>
