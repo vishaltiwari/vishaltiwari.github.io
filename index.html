@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
     
   </head>
   <body>
@@ -555,14 +558,15 @@
   <script>
     $(document).ready(function(){
       $('#background-carousel').owlCarousel({
+        margin:10,
         items: 1,           // Show one slide at a time
         loop: true,           // Loop infinitely
         autoplay: true,       // Start playing automatically
-        autoplayTimeout: 4000,  // 5 seconds per slide
+        autoplayTimeout: 4000,  // 4 seconds per slide
         autoplayHoverPause: false,
         animateOut: 'fadeOut', // Nice fade effect
-        nav: true,         // Hide navigation arrows
-        dots: true          // Hide navigation dots
+        nav: false,         // false if you want to hide.
+        dots: false          // false if you want to hide.
       });
     });
   </script>
